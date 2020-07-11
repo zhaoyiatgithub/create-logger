@@ -1,11 +1,11 @@
-import { isString } from '../verifys'
+import { isKey, isKeyData, isSend, isField, isSBNtype } from '../verifys'
 
 export interface InterfaceKey<T> {
 	key: string
 	set: (field: string, value: string | boolean | number) => void
 	get: (field: string) => void
 	remove: (field: string) => void
-	setData: (data: T) => T
+	setData: (data: T) => T | undefined
 	getData: () => T
 	clear: () => void
 	send: () => void
@@ -25,42 +25,30 @@ export class Key<
 		data: T
 		send: (key: string, data: T) => void
 	}) {
-		this.key = options.key
-		this._data = options.data || ({} as T)
-		this._send = options.send
+		this.key = isKey(options.key) ? options.key : ''
+		this._data = isKeyData(options.data) ? options.data : ({} as T)
+		this._send = isSend(options.send) ? options.send : () => {}
 	}
 	set(field: string, value: string | boolean | number) {
-		this._data[field as keyof T] = value as any
+		if (isField(field) && isSBNtype(value)) {
+			this._data[field as keyof T] = value as any
+		}
 	}
 	get(field: string) {
-		if (isString(field)) {
-			return this._data[field]
-		} else {
-			throw Error('')
+		if (isField(field)) {
+			this._data[field]
 		}
 	}
 	remove(field: string) {
-		let defaultValue
-		if (this._data[field]) {
-			switch (typeof this._data[field]) {
-				case 'string':
-					defaultValue = ''
-					break
-				case 'number':
-					defaultValue = 0
-					break
-				case 'boolean':
-					defaultValue = false
-					break
-				default:
-					break
-			}
-			this._data[field as keyof T] = defaultValue as any
+		if (isField(field) && this._data[field]) {
+			delete this._data[field]
 		}
 	}
 	setData(data: T) {
-		this._data = data
-		return this._data
+		if (isKeyData(data)) {
+			this._data = data
+			return this._data
+		}
 	}
 	getData() {
 		return this._data

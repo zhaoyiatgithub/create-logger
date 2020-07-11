@@ -17,18 +17,16 @@ export class Logger<A extends ActionMapType, T extends TraceMapType> {
 		const action: any = {}
 		const trace: any = {}
 		Object.keys(options.action.keys).forEach((_key) => {
-			const _data = options.action.keys[_key]
 			action[_key] = new Key({
 				key: _key,
-				data: _data,
+				data: options.action.keys[_key],
 				send: options.action.send,
 			})
 		})
 		Object.keys(options.trace.keys).forEach((_key) => {
-			const _data = options.action.keys[_key]
 			trace[_key] = new Key({
 				key: _key,
-				data: _data,
+				data: options.action.keys[_key],
 				send: options.action.send,
 			})
 		})
