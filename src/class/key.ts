@@ -1,4 +1,4 @@
-import { isKey, isKeyData, isSend, isField, isSBNtype } from '../verifys'
+import { isKeyData, isSend, isField, isSBNtype } from '../verifys'
 
 export interface InterfaceKey<T> {
 	key: string
@@ -25,7 +25,7 @@ export class Key<
 		data: T
 		send: (key: string, data: T) => void
 	}) {
-		this.key = isKey(options.key) ? options.key : ''
+		this.key = options.key
 		this._data = isKeyData(options.data) ? options.data : ({} as T)
 		this._send = isSend(options.send) ? options.send : () => {}
 	}
@@ -36,7 +36,7 @@ export class Key<
 	}
 	get(field: string) {
 		if (isField(field)) {
-			this._data[field]
+			return this._data[field]
 		}
 	}
 	remove(field: string) {
@@ -59,7 +59,9 @@ export class Key<
 		})
 	}
 	send() {
-		this._send(this.key, this._data)
+		let sendData = { ...this._data }
+		this._send(this.key, sendData)
 		this.clear()
+		return sendData
 	}
 }

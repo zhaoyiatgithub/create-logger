@@ -1,24 +1,25 @@
 {
-	"name": "loggers",
+	"name": "create-logger",
 	"version": "1.0.0",
 	"description": "",
 	"main": "./lib/main.js",
 	"scripts": {
 		"test": "jest --coverage",
-		"build": "tsc"
+		"build": "tsc",
+		"clean": "rm -rf node_modules package-lock.json && npm i "
 	},
 	"keywords": [
-		"log"
+		"logger"
 	],
-	"author": "zhaoyi",
+	"author": "",
 	"license": "ISC",
 	"dependencies": {
-		"jest": "^26.1.0",
-		"prettier": "^2.0.5",
 		"typescript": "^3.9.6"
 	},
 	"devDependencies": {
 		"@types/jest": "^26.0.4",
+		"jest": "^26.1.0",
+		"prettier": "^2.0.5",
 		"husky": "^4.2.5",
 		"pretty-quick": "^2.0.1",
 		"ts-jest": "^26.1.1"

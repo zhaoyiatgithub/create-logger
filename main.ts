@@ -15,11 +15,11 @@ function createLogger<
 	A extends ActionMapType,
 	T extends TraceMapType
 >(options: {
-	action: {
+	action?: {
 		keys: A
 		send: (key: string, data: any) => void
 	}
-	trace: {
+	trace?: {
 		keys: T
 		send: (key: string, data: any) => void
 	}
