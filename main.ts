@@ -27,4 +27,4 @@ function createLogger<
 	return new Logger<A, T>(options)
 }
 
-export { createLogger }
+export default { createLogger }
