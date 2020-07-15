@@ -2,7 +2,8 @@
 	"name": "create-logger",
 	"version": "1.0.5",
 	"description": "",
-	"main": "./lib/index.js",
+	"main": "./main.js",
+	"types": "./main.d.ts",
 	"scripts": {
 		"test": "jest --coverage",
 		"build": "tsc",
