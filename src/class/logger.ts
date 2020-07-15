@@ -1,4 +1,4 @@
-import { ActionMapType, TraceMapType } from '../..'
+import { ActionMapType, TraceMapType } from '../../index'
 import { Key } from './key'
 
 export class Logger<A extends ActionMapType, T extends TraceMapType> {

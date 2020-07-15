@@ -1,14 +1,3 @@
-declare type ActionMapType = {
-	[name: string]: {
-		[name: string]: string | boolean | number
-	}
-}
-declare type TraceMapType = {
-	[name: string]: {
-		[name: string]: string | boolean | number
-	}
-}
-
 declare class Key<T> {
 	key: string
 	set: (field: string, value: string | boolean | number) => void
@@ -20,14 +9,33 @@ declare class Key<T> {
 	send: () => void
 }
 
-declare class Logger<A extends ActionMapType, T extends TraceMapType> {
+declare class Logger<
+	A extends {
+		[name: string]: {
+			[name: string]: string | boolean | number
+		}
+	},
+	T extends {
+		[name: string]: {
+			[name: string]: string | boolean | number
+		}
+	}
+> {
 	readonly action: Record<keyof A, Key<A[keyof A]>>
 	readonly trace: Record<keyof T, Key<T[keyof T]>>
 }
 
 declare function createLogger<
-	A extends ActionMapType,
-	T extends TraceMapType
+	A extends {
+		[name: string]: {
+			[name: string]: string | boolean | number
+		}
+	},
+	T extends {
+		[name: string]: {
+			[name: string]: string | boolean | number
+		}
+	}
 >(options: {
 	action?: {
 		keys: A
