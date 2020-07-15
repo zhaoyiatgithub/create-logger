@@ -1,5 +1,15 @@
-import { ActionMapType, TraceMapType } from '../../index'
 import { Key } from './key'
+
+type ActionMapType = {
+	[name: string]: {
+		[name: string]: string | boolean | number
+	}
+}
+type TraceMapType = {
+	[name: string]: {
+		[name: string]: string | boolean | number
+	}
+}
 
 export class Logger<A extends ActionMapType, T extends TraceMapType> {
 	readonly action: Record<keyof A, Key<A[keyof A]>>

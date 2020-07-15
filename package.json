@@ -3,7 +3,6 @@
 	"version": "1.0.4",
 	"description": "",
 	"main": "./lib/index.js",
-	"types": "./index.d.ts",
 	"scripts": {
 		"test": "jest --coverage",
 		"build": "tsc",

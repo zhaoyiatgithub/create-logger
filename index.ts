@@ -1,11 +1,11 @@
 import { Logger } from './src/class/logger'
 
-export type ActionMapType = {
+type ActionMapType = {
 	[name: string]: {
 		[name: string]: string | boolean | number
 	}
 }
-export type TraceMapType = {
+type TraceMapType = {
 	[name: string]: {
 		[name: string]: string | boolean | number
 	}
