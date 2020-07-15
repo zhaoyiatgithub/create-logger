@@ -1,21 +1,10 @@
-import { isKeyData, isSend, isField, isSBNtype } from '../verifys'
-
-export interface InterfaceKey<T> {
-	key: string
-	set: (field: string, value: string | boolean | number) => void
-	get: (field: string) => void
-	remove: (field: string) => void
-	setData: (data: T) => T | undefined
-	getData: () => T
-	clear: () => void
-	send: () => void
-}
+import { isKeyData, isSend, isField, isSBNtype } from '../function/verifys'
 
 export class Key<
 	T extends {
 		[name: string]: string | boolean | number
 	}
-> implements InterfaceKey<T> {
+> {
 	readonly key: string
 	private _data: T
 	private _send: (key: string, data: T) => void

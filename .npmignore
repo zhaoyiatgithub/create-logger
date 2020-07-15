@@ -1,0 +1,8 @@
+/__tests__
+/coverage
+/mock
+/node_modules
+.gitignore
+.prettierrc
+jest.config.js
+.tsconfig.json
