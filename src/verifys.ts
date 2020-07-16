@@ -2,7 +2,7 @@ function _isObject(target: any) {
 	return Object.prototype.toString.call(target) === '[object Object]'
 }
 
-export function isKeyData(target: any) {
+export function isData(target: any) {
 	if (
 		_isObject(target) &&
 		Object.values(target).every((_value) => isSBNtype(_value))

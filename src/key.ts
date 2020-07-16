@@ -1,4 +1,4 @@
-import { isKeyData, isSend, isField, isSBNtype } from './verifys'
+import { isData, isField, isSBNtype } from './verifys'
 
 export class Key<
 	T extends {
@@ -15,8 +15,8 @@ export class Key<
 		send: (key: string, data: T) => void
 	}) {
 		this.key = options.key
-		this._data = isKeyData(options.data) ? options.data : ({} as T)
-		this._send = isSend(options.send) ? options.send : () => {}
+		this._data = options.data
+		this._send = options.send
 	}
 	set(field: string, value: string | boolean | number) {
 		if (isField(field) && isSBNtype(value)) {
@@ -29,12 +29,12 @@ export class Key<
 		}
 	}
 	remove(field: string) {
-		if (isField(field) && this._data[field]) {
+		if (isField(field)) {
 			delete this._data[field]
 		}
 	}
 	setData(data: T) {
-		if (isKeyData(data)) {
+		if (isData(data)) {
 			this._data = data
 			return this._data
 		}
@@ -47,10 +47,14 @@ export class Key<
 			this.remove(_key)
 		})
 	}
-	send() {
-		let sendData = { ...this._data }
-		this._send(this.key, sendData)
-		this.clear()
-		return sendData
+	send(data?: T) {
+		if (data && isData(data)) {
+			this.clear()
+			this._send(this.key, data)
+		} else {
+			let sendData = { ...this._data }
+			this.clear()
+			this._send(this.key, sendData)
+		}
 	}
 }

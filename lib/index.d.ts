@@ -1,22 +1,49 @@
 import { Logger } from './src/logger'
-export declare function createLogger<
-	A extends {
-		[name: string]: {
-			[name: string]: string | boolean | number
-		}
-	},
-	T extends {
-		[name: string]: {
-			[name: string]: string | boolean | number
-		}
-	}
->(options: {
+export declare function createLogger(options: {
 	action?: {
-		keys: A
-		send: (key: string, data: any) => void
+		names: {
+			[name: string]: {
+				key?: string
+				data?: {
+					[name: string]: string | boolean | number
+				}
+			}
+		}
+		send: (key: string, data: object) => void
 	}
 	trace?: {
-		keys: T
-		send: (key: string, data: any) => void
+		names: {
+			[name: string]: {
+				key?: string
+				data?: {
+					[name: string]: string | boolean | number
+				}
+			}
+		}
+		send: (key: string, data: object) => void
 	}
-}): Logger<A, T>
+}): Logger<
+	{
+		[name: string]: string | number | boolean
+	},
+	{
+		[name: string]: {
+			key?: string | undefined
+			data?:
+				| {
+						[name: string]: string | number | boolean
+				  }
+				| undefined
+		}
+	},
+	{
+		[name: string]: {
+			key?: string | undefined
+			data?:
+				| {
+						[name: string]: string | number | boolean
+				  }
+				| undefined
+		}
+	}
+>

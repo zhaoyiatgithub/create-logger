@@ -1,6 +1,4 @@
 import { createLogger } from '../index'
-import { actionMap } from '../mock/actionMap'
-import { traceMap } from '../mock/traceMap'
 
 const mockActionSend = jest.fn((key: string, data: any) => {
 	console.log(key, data)
@@ -11,7 +9,16 @@ const mockTraceSend = jest.fn((key: string, data: any) => {
 function getDefaultActionLogger() {
 	const logger = createLogger({
 		action: {
-			keys: actionMap,
+			names: {
+				order_mask_show: {
+					key: 'order_mask_show',
+					data: {
+						field_string: '',
+						field_boolean: false,
+						field_number: 0,
+					},
+				},
+			},
 			send: mockActionSend,
 		},
 	})
@@ -22,7 +29,16 @@ function getDefaultActionLogger() {
 function getDefaultTraceLogger() {
 	const logger = createLogger({
 		trace: {
-			keys: traceMap,
+			names: {
+				order_mask_hide: {
+					key: 'order_mask_hide',
+					data: {
+						field_string: '',
+						field_boolean: false,
+						field_number: 0,
+					},
+				},
+			},
 			send: mockTraceSend,
 		},
 	})
@@ -57,18 +73,56 @@ describe('代码健壮性测试', () => {
 
 		expect(errorResult).toBeUndefined()
 	})
+	test('使用不合法的action data', () => {
+		let errorResult
+		try {
+			const logger = createLogger({
+				action: {
+					names: {
+						order_mask_show: {
+							//@ts-ignore
+							data: true,
+						},
+					},
+				},
+			})
+		} catch (error) {
+			errorResult = error
+		}
+
+		expect(errorResult).toBeUndefined()
+	})
+	test('使用不合法的trace data', () => {
+		let errorResult
+		try {
+			const logger = createLogger({
+				trace: {
+					names: {
+						order_mask_hide: {
+							//@ts-ignore
+							data: true,
+						},
+					},
+				},
+			})
+		} catch (error) {
+			errorResult = error
+		}
+
+		expect(errorResult).toBeUndefined()
+	})
 	test('使用不合法的send', () => {
 		let errorResult
 		try {
 			const logger = createLogger({
 				//@ts-ignore
 				action: {
-					keys: {
+					names: {
 						//@ts-ignore
 						order_mask_show: 'string',
 					},
 					//@ts-ignore
-					send: false,
+					send: true,
 				},
 			})
 		} catch (error) {
@@ -234,9 +288,22 @@ describe('Action功能性测试', () => {
 			field_boolean: true,
 			field_number: 1,
 		})
-		const sendData = logger.action.order_mask_show.send()
 
-		expect(sendData).toEqual({
+		logger.action.order_mask_show.send()
+
+		expect(logger.action.order_mask_show.getData()).toEqual({})
+		expect(mockActionSend.mock.calls[0][0]).toBe('order_mask_show')
+		expect(mockActionSend.mock.calls[0][1]).toEqual({
+			field_string: 'string',
+			field_boolean: true,
+			field_number: 1,
+		})
+	})
+
+	test('发送测试 send 传参', () => {
+		const logger = getDefaultActionLogger()
+
+		logger.action.order_mask_show.send({
 			field_string: 'string',
 			field_boolean: true,
 			field_number: 1,
@@ -256,11 +323,11 @@ describe('Trace功能性测试', () => {
 	test('插入单条数据测试', () => {
 		const logger = getDefaultTraceLogger()
 
-		logger.trace.order_mask_show.set('field_string', 'string')
-		logger.trace.order_mask_show.set('field_boolean', true)
-		logger.trace.order_mask_show.set('field_number', 1)
+		logger.trace.order_mask_hide.set('field_string', 'string')
+		logger.trace.order_mask_hide.set('field_boolean', true)
+		logger.trace.order_mask_hide.set('field_number', 1)
 
-		expect(logger.trace.order_mask_show.getData()).toEqual({
+		expect(logger.trace.order_mask_hide.getData()).toEqual({
 			field_string: 'string',
 			field_boolean: true,
 			field_number: 1,
@@ -270,47 +337,47 @@ describe('Trace功能性测试', () => {
 	test('获取单条数据测试', () => {
 		const logger = getDefaultTraceLogger()
 
-		logger.trace.order_mask_show.set('field_string', 'string')
-		logger.trace.order_mask_show.set('field_boolean', true)
-		logger.trace.order_mask_show.set('field_number', 1)
+		logger.trace.order_mask_hide.set('field_string', 'string')
+		logger.trace.order_mask_hide.set('field_boolean', true)
+		logger.trace.order_mask_hide.set('field_number', 1)
 
-		expect(logger.trace.order_mask_show.get('field_string')).toBe('string')
-		expect(logger.trace.order_mask_show.get('field_boolean')).toBe(true)
-		expect(logger.trace.order_mask_show.get('field_number')).toBe(1)
+		expect(logger.trace.order_mask_hide.get('field_string')).toBe('string')
+		expect(logger.trace.order_mask_hide.get('field_boolean')).toBe(true)
+		expect(logger.trace.order_mask_hide.get('field_number')).toBe(1)
 	})
 
 	test('移除单条数据测试', () => {
 		const logger = getDefaultTraceLogger()
 
-		logger.trace.order_mask_show.set('field_string', 'string')
-		logger.trace.order_mask_show.set('field_boolean', true)
-		logger.trace.order_mask_show.set('field_number', 1)
+		logger.trace.order_mask_hide.set('field_string', 'string')
+		logger.trace.order_mask_hide.set('field_boolean', true)
+		logger.trace.order_mask_hide.set('field_number', 1)
 
-		expect(logger.trace.order_mask_show.get('field_string')).toBe('string')
-		expect(logger.trace.order_mask_show.get('field_boolean')).toBe(true)
-		expect(logger.trace.order_mask_show.get('field_number')).toBe(1)
+		expect(logger.trace.order_mask_hide.get('field_string')).toBe('string')
+		expect(logger.trace.order_mask_hide.get('field_boolean')).toBe(true)
+		expect(logger.trace.order_mask_hide.get('field_number')).toBe(1)
 
-		logger.trace.order_mask_show.remove('field_string')
-		logger.trace.order_mask_show.remove('field_boolean')
-		logger.trace.order_mask_show.remove('field_number')
+		logger.trace.order_mask_hide.remove('field_string')
+		logger.trace.order_mask_hide.remove('field_boolean')
+		logger.trace.order_mask_hide.remove('field_number')
 
-		expect(logger.trace.order_mask_show.get('field_string')).toBeUndefined()
+		expect(logger.trace.order_mask_hide.get('field_string')).toBeUndefined()
 		expect(
-			logger.trace.order_mask_show.get('field_boolean')
+			logger.trace.order_mask_hide.get('field_boolean')
 		).toBeUndefined()
-		expect(logger.trace.order_mask_show.get('field_number')).toBeUndefined()
+		expect(logger.trace.order_mask_hide.get('field_number')).toBeUndefined()
 	})
 
 	test('插入数据测试', () => {
 		const logger = getDefaultTraceLogger()
 
-		logger.trace.order_mask_show.setData({
+		logger.trace.order_mask_hide.setData({
 			field_string: 'string',
 			field_boolean: true,
 			field_number: 1,
 		})
 
-		expect(logger.trace.order_mask_show.getData()).toEqual({
+		expect(logger.trace.order_mask_hide.getData()).toEqual({
 			field_string: 'string',
 			field_boolean: true,
 			field_number: 1,
@@ -319,13 +386,13 @@ describe('Trace功能性测试', () => {
 
 	test('获取数据测试', () => {
 		const logger = getDefaultTraceLogger()
-		logger.trace.order_mask_show.setData({
+		logger.trace.order_mask_hide.setData({
 			field_string: 'string',
 			field_boolean: true,
 			field_number: 1,
 		})
 
-		expect(logger.trace.order_mask_show.getData()).toEqual({
+		expect(logger.trace.order_mask_hide.getData()).toEqual({
 			field_string: 'string',
 			field_boolean: true,
 			field_number: 1,
@@ -334,41 +401,54 @@ describe('Trace功能性测试', () => {
 
 	test('移除数据测试', () => {
 		const logger = getDefaultTraceLogger()
-		logger.trace.order_mask_show.setData({
+		logger.trace.order_mask_hide.setData({
 			field_string: 'string',
 			field_boolean: true,
 			field_number: 1,
 		})
 
-		expect(logger.trace.order_mask_show.getData()).toEqual({
+		expect(logger.trace.order_mask_hide.getData()).toEqual({
 			field_string: 'string',
 			field_boolean: true,
 			field_number: 1,
 		})
 
-		logger.trace.order_mask_show.clear()
+		logger.trace.order_mask_hide.clear()
 
-		expect(logger.trace.order_mask_show.getData()).toEqual({})
+		expect(logger.trace.order_mask_hide.getData()).toEqual({})
 	})
 
 	test('发送测试', () => {
 		const logger = getDefaultTraceLogger()
 
-		logger.trace.order_mask_show.setData({
-			field_string: 'string',
-			field_boolean: true,
-			field_number: 1,
-		})
-		const sendData = logger.trace.order_mask_show.send()
-
-		expect(sendData).toEqual({
+		logger.trace.order_mask_hide.setData({
 			field_string: 'string',
 			field_boolean: true,
 			field_number: 1,
 		})
 
-		expect(logger.trace.order_mask_show.getData()).toEqual({})
-		expect(mockTraceSend.mock.calls[0][0]).toBe('order_mask_show')
+		logger.trace.order_mask_hide.send()
+
+		expect(logger.trace.order_mask_hide.getData()).toEqual({})
+		expect(mockTraceSend.mock.calls[0][0]).toBe('order_mask_hide')
+		expect(mockTraceSend.mock.calls[0][1]).toEqual({
+			field_string: 'string',
+			field_boolean: true,
+			field_number: 1,
+		})
+	})
+
+	test('发送测试 send 传参', () => {
+		const logger = getDefaultTraceLogger()
+
+		logger.trace.order_mask_hide.send({
+			field_string: 'string',
+			field_boolean: true,
+			field_number: 1,
+		})
+
+		expect(logger.trace.order_mask_hide.getData()).toEqual({})
+		expect(mockTraceSend.mock.calls[0][0]).toBe('order_mask_hide')
 		expect(mockTraceSend.mock.calls[0][1]).toEqual({
 			field_string: 'string',
 			field_boolean: true,

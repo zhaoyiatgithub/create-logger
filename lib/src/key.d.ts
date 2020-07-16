@@ -17,5 +17,5 @@ export declare class Key<
 	setData(data: T): T | undefined
 	getData(): T
 	clear(): void
-	send(): T
+	send(data?: T): void
 }
