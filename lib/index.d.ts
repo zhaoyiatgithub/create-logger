@@ -9,7 +9,7 @@ declare type TraceMapType = {
 		[name: string]: string | boolean | number
 	}
 }
-declare function createLogger<
+export declare function createLogger<
 	A extends ActionMapType,
 	T extends TraceMapType
 >(options: {
@@ -22,7 +22,4 @@ declare function createLogger<
 		send: (key: string, data: any) => void
 	}
 }): Logger<A, T>
-declare const _default: {
-	createLogger: typeof createLogger
-}
-export default _default
+export {}
