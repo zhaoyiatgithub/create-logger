@@ -2,11 +2,10 @@
 	"name": "create-logger",
 	"version": "1.0.8",
 	"description": "",
-	"main": "./main.js",
-	"types": "./main.d.ts",
+	"main": "lib/index.js",
 	"scripts": {
 		"test": "jest --coverage",
-		"build": "tsc",
+		"build": "rm -rf lib && tsc",
 		"clean": "rm -rf node_modules package-lock.json && npm i "
 	},
 	"keywords": [
