@@ -13,16 +13,15 @@
 	],
 	"author": "",
 	"license": "ISC",
-	"dependencies": {
-		"typescript": "^3.9.6"
-	},
+	"dependencies": {},
 	"devDependencies": {
 		"@types/jest": "^26.0.4",
 		"jest": "^26.1.0",
 		"prettier": "^2.0.5",
 		"husky": "^4.2.5",
 		"pretty-quick": "^2.0.1",
-		"ts-jest": "^26.1.1"
+		"ts-jest": "^26.1.1",
+		"typescript": "^3.9.6"
 	},
 	"husky": {
 		"hooks": {

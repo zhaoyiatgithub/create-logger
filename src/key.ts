@@ -1,4 +1,4 @@
-import { isKeyData, isSend, isField, isSBNtype } from '../function/verifys'
+import { isKeyData, isSend, isField, isSBNtype } from './verifys'
 
 export class Key<
 	T extends {

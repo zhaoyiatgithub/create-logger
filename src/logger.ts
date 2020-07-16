@@ -1,17 +1,17 @@
 import { Key } from './key'
 
-type ActionMapType = {
-	[name: string]: {
-		[name: string]: string | boolean | number
+export class Logger<
+	A extends {
+		[name: string]: {
+			[name: string]: string | boolean | number
+		}
+	},
+	T extends {
+		[name: string]: {
+			[name: string]: string | boolean | number
+		}
 	}
-}
-type TraceMapType = {
-	[name: string]: {
-		[name: string]: string | boolean | number
-	}
-}
-
-export class Logger<A extends ActionMapType, T extends TraceMapType> {
+> {
 	readonly action: Record<keyof A, Key<A[keyof A]>>
 	readonly trace: Record<keyof T, Key<T[keyof T]>>
 	constructor(options: {
