@@ -1,5 +1,6 @@
-import { Logger } from './logger'
-export declare function createLogger<
+import { Logger } from './src/logger'
+
+export function createLogger<
 	A extends {
 		[name: string]: {
 			[name: string]: string | boolean | number
@@ -19,4 +20,6 @@ export declare function createLogger<
 		keys: T
 		send: (key: string, data: any) => void
 	}
-}): Logger<A, T>
+}) {
+	return new Logger<A, T>(options)
+}
