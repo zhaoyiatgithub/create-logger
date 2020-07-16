@@ -3,6 +3,7 @@
 /mock
 /node_modules
 /src
+/image
 index.ts
 .gitignore
 .prettierrc

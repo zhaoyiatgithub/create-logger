@@ -6,8 +6,8 @@
     -   [1.1. 为什么要使用](#11-为什么要使用)
     -   [1.2. 安装 create-logger](#12-安装-create-logger)
     -   [1.3. 在项目中使用](#13-在项目中使用)
-        -   [1.3.1. 创建一个 logger](#131-创建一个logger)
-        -   [1.3.2. 使用 logger](#132-使用logger)
+        -   [1.3.1. 创建一个 logger](#131-创建一个-logger)
+        -   [1.3.2. 使用 logger](#132-使用-logger)
             -   [1.3.2.1. key](#1321-key)
             -   [1.3.2.2. set](#1322-set)
             -   [1.3.2.3. get](#1323-get)
@@ -62,7 +62,7 @@ create-logger 项目只导出一个方法就是 createLogger，通过该方法�
 
 #### 1.3.2.2. set
 
-logger.action,order_mask_show 下有一个内置的属性 data，就是在 createLogger 中 order_mask_show 属性下面的对象，logger.action,order_mask_show.set 可以设置这个对象的内容，最后我们可以通过 send 方法，将我们配置好的对象发送出去，由于我们可以多次调用 set 方法，可以设置开始时间，结束时间，并获取中间的时间差。最后在需要的时机发送。
+logger.action,order_mask_show 下有一个内置的属性 data，就是在 createLogger 中 order_mask_show 属性下面的对象，在 order_mask_show 下面还有 set 方法，可以设置这个对象的内容，最后我们可以通过 send 方法，将我们配置好的对象发送出去，由于我们可以多次调用 set 方法，可以设置开始时间，结束时间，并获取中间的时间差。最后在需要的时机发送。
 
 #### 1.3.2.3. get
 
