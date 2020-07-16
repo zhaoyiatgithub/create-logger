@@ -11,7 +11,7 @@ type TraceMapType = {
 	}
 }
 
-function createLogger<
+export function createLogger<
 	A extends ActionMapType,
 	T extends TraceMapType
 >(options: {
@@ -26,5 +26,3 @@ function createLogger<
 }) {
 	return new Logger<A, T>(options)
 }
-
-export default { createLogger }
