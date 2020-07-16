@@ -1,31 +1,32 @@
 import { Key } from './key'
 export declare class Logger<
-	D extends {
-		[name: string]: string | boolean | number
-	},
 	A extends {
 		[name: string]: {
-			key?: string
-			data?: D
+			key: string
+			data: {
+				[name: string]: string | boolean | number
+			}
 		}
 	},
 	T extends {
 		[name: string]: {
-			key?: string
-			data?: D
+			key: string
+			data: {
+				[name: string]: string | boolean | number
+			}
 		}
 	}
 > {
-	readonly action: Record<keyof A, Key<D>>
-	readonly trace: Record<keyof T, Key<D>>
+	readonly action: Record<keyof A, Key<A[keyof A]['data']>>
+	readonly trace: Record<keyof T, Key<T[keyof T]['data']>>
 	constructor(options: {
 		action?: {
 			names: A
-			send: (key: string, data: any) => void
+			send: (key: string, data: object) => void
 		}
 		trace?: {
 			names: T
-			send: (key: string, data: any) => void
+			send: (key: string, data: object) => void
 		}
 	})
 }

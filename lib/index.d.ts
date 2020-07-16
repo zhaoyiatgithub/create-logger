@@ -24,26 +24,19 @@ export declare function createLogger(options: {
 	}
 }): Logger<
 	{
-		[name: string]: string | number | boolean
-	},
-	{
 		[name: string]: {
-			key?: string | undefined
-			data?:
-				| {
-						[name: string]: string | number | boolean
-				  }
-				| undefined
+			key: string
+			data: {
+				[name: string]: string | number | boolean
+			}
 		}
 	},
 	{
 		[name: string]: {
-			key?: string | undefined
-			data?:
-				| {
-						[name: string]: string | number | boolean
-				  }
-				| undefined
+			key: string
+			data: {
+				[name: string]: string | number | boolean
+			}
 		}
 	}
 >

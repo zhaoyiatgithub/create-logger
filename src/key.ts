@@ -1,10 +1,6 @@
 import { isData, isField, isSBNtype } from './verifys'
 
-export class Key<
-	T extends {
-		[name: string]: string | boolean | number
-	}
-> {
+export class Key<T> {
 	readonly key: string
 	private _data: T
 	private _send: (key: string, data: T) => void
@@ -18,19 +14,19 @@ export class Key<
 		this._data = options.data
 		this._send = options.send
 	}
-	set(field: string, value: string | boolean | number) {
+	set(field: keyof T, value: string | boolean | number) {
 		if (isField(field) && isSBNtype(value)) {
 			this._data[field as keyof T] = value as any
 		}
 	}
-	get(field: string) {
+	get(field: keyof T) {
 		if (isField(field)) {
-			return this._data[field]
+			return this._data[field as keyof T]
 		}
 	}
-	remove(field: string) {
+	remove(field: keyof T) {
 		if (isField(field)) {
-			delete this._data[field]
+			delete this._data[field as keyof T]
 		}
 	}
 	setData(data: T) {
@@ -44,7 +40,7 @@ export class Key<
 	}
 	clear() {
 		Object.keys(this._data).forEach((_key) => {
-			this.remove(_key)
+			this.remove(_key as keyof T)
 		})
 	}
 	send(data?: T) {
