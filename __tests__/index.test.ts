@@ -1,4 +1,4 @@
-import { createLogger } from '../main'
+import { createLogger } from '../index'
 import { actionMap } from '../mock/actionMap'
 import { traceMap } from '../mock/traceMap'
 
