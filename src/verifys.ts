@@ -2,6 +2,15 @@ function _isObject(target: any) {
 	return Object.prototype.toString.call(target) === '[object Object]'
 }
 
+export function isName(target: any) {
+	if (_isObject(target)) {
+		return true
+	} else {
+		console.warn('name should be object with key "key" and "data"')
+		return false
+	}
+}
+
 export function isData(target: any) {
 	if (
 		_isObject(target) &&

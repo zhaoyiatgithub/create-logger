@@ -1,42 +1,19 @@
-import { Logger } from './src/logger'
-export declare function createLogger(options: {
-	action?: {
-		names: {
-			[name: string]: {
-				key?: string
-				data?: {
-					[name: string]: string | boolean | number
-				}
-			}
-		}
-		send: (key: string, data: object) => void
-	}
-	trace?: {
-		names: {
-			[name: string]: {
-				key?: string
-				data?: {
-					[name: string]: string | boolean | number
-				}
-			}
-		}
-		send: (key: string, data: object) => void
-	}
-}): Logger<
-	{
+import { Key } from './src/key'
+export declare function createLogger<
+	T extends {
 		[name: string]: {
-			key: string
-			data: {
-				[name: string]: string | number | boolean
-			}
-		}
-	},
-	{
-		[name: string]: {
-			key: string
-			data: {
-				[name: string]: string | number | boolean
+			key?: string
+			data?: {
+				[name: string]: string | boolean | number
 			}
 		}
 	}
+>(options: {
+	names: T
+	send: (key: string, data: object) => void
+}): Record<
+	keyof T,
+	Key<{
+		[name: string]: string | number | boolean
+	}>
 >

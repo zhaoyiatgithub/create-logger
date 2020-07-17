@@ -1,6 +1,10 @@
 import { isData, isField, isSBNtype } from './verifys'
 
-export class Key<T> {
+export class Key<
+	T extends {
+		[name: string]: string | boolean | number
+	}
+> {
 	readonly key: string
 	private _data: T
 	private _send: (key: string, data: T) => void
@@ -19,7 +23,7 @@ export class Key<T> {
 			this._data[field as keyof T] = value as any
 		}
 	}
-	get(field: keyof T) {
+	get(field: keyof T): string | boolean | number | undefined {
 		if (isField(field)) {
 			return this._data[field as keyof T]
 		}
@@ -35,7 +39,7 @@ export class Key<T> {
 			return this._data
 		}
 	}
-	getData() {
+	getData(): T {
 		return this._data
 	}
 	clear() {

@@ -1,98 +1,91 @@
-import { Logger } from './src/logger'
+import { isName, isData, isSend } from './src/verifys'
+import { Key } from './src/key'
 
-export function createLogger(options: {
-	action?: {
-		names: {
-			[name: string]: {
-				key?: string
-				data?: {
-					[name: string]: string | boolean | number
-				}
+function formatOptions<
+	T extends {
+		[name: string]: {
+			key?: string
+			data?: {
+				[name: string]: string | boolean | number
 			}
 		}
-		send: (key: string, data: object) => void
 	}
-	trace?: {
-		names: {
-			[name: string]: {
-				key?: string
-				data?: {
-					[name: string]: string | boolean | number
-				}
-			}
+>(options: { names: T; send: (key: string, data: object) => void }) {
+	for (const key in options.names) {
+		if (Object.prototype.hasOwnProperty.call(options.names, key)) {
+			const _element = isName(options.names[key])
+				? options.names[key]
+				: ({} as T)
+			_element.key = _element.key || key
+			_element.data =
+				_element.data && isData(_element.data) ? _element.data : {}
 		}
-		send: (key: string, data: object) => void
 	}
-}) {
-	return new Logger(formatOptions(options))
-}
-
-function formatOptions(options: {
-	action?: {
-		names: {
-			[name: string]: {
-				key?: string
-				data?: {
-					[name: string]: string | boolean | number
-				}
-			}
-		}
-		send: (key: string, data: object) => void
-	}
-	trace?: {
-		names: {
-			[name: string]: {
-				key?: string
-				data?: {
-					[name: string]: string | boolean | number
-				}
-			}
-		}
-		send: (key: string, data: object) => void
-	}
-}) {
-	Object.keys(options.action?.names || {}).forEach((_name) => {
-		const _action = options.action?.names[_name] || {}
-		if (!_action.data) {
-			_action.data = {}
-		}
-		if (!_action.key) {
-			_action.key = _name
-		}
-	})
-
-	Object.keys(options.trace?.names || {}).forEach((_name) => {
-		const _trace = options.trace?.names[_name] || {}
-		if (!_trace.data) {
-			_trace.data = {}
-		}
-		if (!_trace.key) {
-			_trace.key = _name
-		}
-	})
 
 	return options as {
-		action?: {
-			names: {
-				[name: string]: {
-					key: string
-					data: {
-						[name: string]: string | boolean | number
-					}
+		names: {
+			[name: string]: {
+				key: string
+				data: {
+					[name: string]: string | boolean | number
 				}
 			}
-			send: (key: string, data: object) => void
 		}
-		trace?: {
-			names: {
-				[name: string]: {
-					key: string
-					data: {
-						[name: string]: string | boolean | number
-					}
-				}
+		send: (key: string, data: object) => void
+	}
+}
+
+function createLoggerLegacy<
+	T extends {
+		[name: string]: {
+			key: string
+			data: {
+				[name: string]: string | boolean | number
 			}
-			send: (key: string, data: object) => void
 		}
 	}
+>(options: {
+	names: T
+	send: (key: string, data: object) => void
+}): Record<keyof T, Key<T[keyof T]['data']>> {
+	const _map = new Map<keyof T, Key<T[keyof T]['data']>>()
+
+	for (const key in options.names) {
+		if (Object.prototype.hasOwnProperty.call(options.names, key)) {
+			const element = options.names[key]
+			_map.set(
+				key,
+				new Key({
+					key: element.key,
+					data:
+						element.data && isData(element.data)
+							? element.data
+							: {},
+					send:
+						options.send && isSend(options.send)
+							? options.send
+							: () => {},
+				})
+			)
+		}
+	}
+
+	return Object.fromEntries(_map) as Record<keyof T, Key<T[keyof T]['data']>>
+}
+
+export function createLogger<
+	T extends {
+		[name: string]: {
+			key?: string
+			data?: {
+				[name: string]: string | boolean | number
+			}
+		}
+	}
+>(options: { names: T; send: (key: string, data: object) => void }) {
+	const _options = formatOptions(options)
+	const _logger = createLoggerLegacy(_options)
+
+	type TT = typeof _options['names']
+	return _logger as Record<keyof T, Key<TT[keyof TT]['data']>>
 }
