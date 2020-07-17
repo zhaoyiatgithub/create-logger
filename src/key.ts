@@ -40,7 +40,7 @@ export class Key<
 		}
 	}
 	getData(): T {
-		return this._data
+		return { ...this._data }
 	}
 	clear() {
 		Object.keys(this._data).forEach((_key) => {
