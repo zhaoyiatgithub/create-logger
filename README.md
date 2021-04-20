@@ -7,7 +7,7 @@ A tool for create logger instance
 Run the following command in your project's directory to grab the latest published version of this code:
 
 ```bash
-$ npm install react-native-event-source --save
+$ npm install create-logger --save
 ```
 
 ### Using in your project
