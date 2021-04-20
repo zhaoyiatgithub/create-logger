@@ -1,5 +1,5 @@
-import { isName, isData, isSend } from './src/verifys'
-import { Key } from './src/key'
+import { isName, isData, isSend } from './verifyUtil'
+import { Key } from './key'
 
 function formatOptions<
 	T extends {

@@ -1,10 +1,8 @@
-'use strict'
-Object.defineProperty(exports, '__esModule', { value: true })
-exports.isSBNtype = exports.isField = exports.isSend = exports.isData = exports.isName = void 0
-function _isObject(target) {
+export function _isObject(target: any) {
 	return Object.prototype.toString.call(target) === '[object Object]'
 }
-function isName(target) {
+
+export function isName(target: any) {
 	if (_isObject(target)) {
 		return true
 	} else {
@@ -12,8 +10,8 @@ function isName(target) {
 		return false
 	}
 }
-exports.isName = isName
-function isData(target) {
+
+export function isData(target: any) {
 	if (
 		_isObject(target) &&
 		Object.values(target).every((_value) => isSBNtype(_value))
@@ -26,8 +24,8 @@ function isData(target) {
 		return false
 	}
 }
-exports.isData = isData
-function isSend(target) {
+
+export function isSend(target: any) {
 	if (typeof target === 'function') {
 		return true
 	} else {
@@ -35,8 +33,8 @@ function isSend(target) {
 		return false
 	}
 }
-exports.isSend = isSend
-function isField(target) {
+
+export function isField(target: any) {
 	if (typeof target === 'string') {
 		return true
 	} else {
@@ -44,8 +42,8 @@ function isField(target) {
 		return false
 	}
 }
-exports.isField = isField
-function isSBNtype(target) {
+
+export function isSBNtype(target: any) {
 	if (['string', 'boolean', 'number'].includes(typeof target)) {
 		return true
 	} else {
@@ -53,4 +51,3 @@ function isSBNtype(target) {
 		return false
 	}
 }
-exports.isSBNtype = isSBNtype

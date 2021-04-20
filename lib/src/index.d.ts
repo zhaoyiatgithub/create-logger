@@ -1,4 +1,3 @@
-import { Key } from './src/key'
 export declare function createLogger<
 	T extends {
 		[name: string]: {
@@ -11,9 +10,4 @@ export declare function createLogger<
 >(options: {
 	names: T
 	send: (key: string, data: object) => void
-}): Record<
-	keyof T,
-	Key<{
-		[name: string]: string | number | boolean
-	}>
->
+}): Record<keyof T, any>
